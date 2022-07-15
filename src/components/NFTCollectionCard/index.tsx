@@ -1,11 +1,10 @@
 import React, { useEffect } from 'react';
-import { Link } from 'react-router-dom';
 import styled, { useTheme } from "styled-components";
 import useMatchBreakpoints from '../../hooks/useMatchBreakpoints';
 import { NFTCollectionMetadata } from '../../types/collection';
-import { getId } from '../../utils/utils';
+import { displayVolume, getId } from '../../utils/utils';
 import CircleAvatar from '../CircleAvatar';
-import { Button, Card, Img, Text, Wrapper } from '../Foundation';
+import { Card, Text, Wrapper } from '../Foundation';
 
 interface NFTCollectionCardProps {
     collection: NFTCollectionMetadata;
@@ -31,15 +30,6 @@ const NFTCollectionCard: React.FC<NFTCollectionCardProps> = (
         return theme.sizes.card.small;
     }
 
-    const displayVolume = (volume: number) => {
-        if (volume / 10**6 >=1) {
-            return `$${Math.round(volume / 10**6)}m`
-        } else if (volume / 10**3 >=1) {
-            return `$${Math.round(volume / 10**3)}k`
-        } 
-        return `$${Math.round(volume)}`
-    }
-
     return (
         <CardWrapper>
             <Card 
@@ -57,16 +47,25 @@ const NFTCollectionCard: React.FC<NFTCollectionCardProps> = (
                 <TitleOverlay onClick={onSelect}>
                         <ContentWrapper align="start" justify="center" items="center">
                             <TextWrapper>
-                                <Text className='collection-name' bold style={{textOverflow: 'unset', whiteSpace: 'normal', wordBreak: 'break-word'}} >
+                                <Text 
+                                    className='collection-name' 
+                                    bold 
+                                    fontSize={isTablet ? '12px' : '14px'}
+                                    style={{
+                                        textOverflow: 'ellipses', 
+                                        whiteSpace: 'normal', 
+                                        wordBreak: 'break-word',
+                                        maxHeight: isTablet ? '40px' : '80px'
+                                        }} >
                                     {collectionDict.name}
                                 </Text>
                                 <div className="collection-title-box" style={{display: 'block'}}>
                                     <div style={{display: 'inline-flex', alignItems: 'center'}}>
-                                        <Text className='collection-volume'>
+                                        <Text fontSize={isTablet ? '11px' : '12px'} className='collection-volume'>
                                             {`${collection.total} NFTs`}
                                         </Text>
                                         <div className="collection-title-divider"style={{margin: '0 8px', height: '100%', border: '1px solid white'}} />
-                                        <Text className='collection-volume'>
+                                        <Text fontSize={isTablet ? '11px' : '12px' } className='collection-volume'>
                                             {`Volumn ${displayVolume(collection.volume)}`}
                                         </Text>  
                                     </div>
@@ -126,7 +125,7 @@ const ImgWrapper = styled.div<{
 const TitleOverlay = styled.div`
     padding: 8px 0;
     text-align: center;
-    background: #0201016b;
+    background: #222832a3;
     position: absolute;
     top: 59%;
     left: 10%;
@@ -136,7 +135,7 @@ const TitleOverlay = styled.div`
     transition: all ease-in-out 0.15s;
 
     &:hover {
-        background: #0a0e16a8;
+        background: #222832c4;
         transition: all ease-in-out 0.3s;
     }
 `;

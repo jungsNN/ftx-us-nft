@@ -45,14 +45,14 @@ export const darkColors: Colors = {
 }
 
 const _lightShadows: ElevationShadows = {
-    default: "-2px 2px 4px rgb(29 30 30 / 20%), 2px -2px 4px rgb(29 30 30 / 20%), -2px -2px 4px #00799454, 2px 2px 5px rgb(29 30 30 / 90%), inset 1px 1px 2px rgb(45 48 48 / 30%), inset -1px -1px 2px rgb(29 30 30 / 47%);",
-    card: "-2px 2px 4px rgb(29 30 30 / 20%), 2px -2px 4px rgb(29 30 30 / 20%), -2px -2px 4px #00799454, 2px 2px 5px rgb(29 30 30 / 90%), inset 1px 1px 2px rgb(45 48 48 / 30%), inset -1px -1px 2px rgb(29 30 30 / 47%);",
+    default: "-2px 2px 4px rgb(29 30 30 / 20%), 2px -2px 4px rgb(29 30 30 / 20%), -2px -2px 4px #00799429, 2px 2px 5px rgb(29 30 30 / 90%), inset 1px 1px 2px rgb(45 48 48 / 30%), inset -1px -1px 2px rgb(29 30 30 / 47%);",
+    card: "-2px 2px 4px rgb(29 30 30 / 20%), 2px -2px 4px rgb(29 30 30 / 20%), -2px -2px 4px #00799429, 2px 2px 5px rgb(29 30 30 / 90%), inset 1px 1px 2px rgb(45 48 48 / 30%), inset -1px -1px 2px rgb(29 30 30 / 47%);",
     hover: "1px 1px 2px rgba(255, 255, 255, 0.3), -1px -1px 2px rgba(143, 144, 149, 0.5), inset -2px 2px 4px rgba(143, 144, 149, 0.2), inset 2px -2px 4px rgba(143, 144, 149, 0.2), inset -2px -2px 4px rgba(255, 255, 255, 0.9), inset 2px 2px 5px rgba(143, 144, 149, 0.9);",
 }
 
 const _darkShadows: ElevationShadows = {
-  default: "-2px 2px 4px rgb(29 30 30 / 20%), 2px -2px 4px rgb(29 30 30 / 20%), -2px -2px 4px #00799454, 2px 2px 5px rgb(29 30 30 / 90%), inset 1px 1px 2px rgb(45 48 48 / 30%), inset -1px -1px 2px rgb(29 30 30 / 47%);",
-  card: "-2px 2px 4px rgb(29 30 30 / 20%), 2px -2px 4px rgb(29 30 30 / 20%), -2px -2px 4px #00799454, 2px 2px 5px rgb(29 30 30 / 90%), inset 1px 1px 2px rgb(45 48 48 / 30%), inset -1px -1px 2px rgb(29 30 30 / 47%);",
+  default: "-2px 2px 4px rgb(29 30 30 / 20%), 2px -2px 4px rgb(29 30 30 / 20%), -2px -2px 4px #00799429, 2px 2px 5px rgb(29 30 30 / 90%), inset 1px 1px 2px rgb(45 48 48 / 30%), inset -1px -1px 2px rgb(29 30 30 / 47%);",
+  card: "-2px 2px 4px rgb(29 30 30 / 20%), 2px -2px 4px rgb(29 30 30 / 20%), -2px -2px 4px #00799429, 2px 2px 5px rgb(29 30 30 / 90%), inset 1px 1px 2px rgb(45 48 48 / 30%), inset -1px -1px 2px rgb(29 30 30 / 47%);",
   hover: "inset -2px 2px 4px rgba(15, 16, 16, 0.2), inset 2px -2px 4px rgba(15, 16, 16, 0.2), inset -2px -2px 4px rgba(59, 62, 62, 0.9), inset 2px 2px 5px rgba(15, 16, 16, 0.9);",
 }
 

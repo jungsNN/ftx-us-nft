@@ -87,4 +87,5 @@ const ImgWrapper = styled.div<{
     }
 `;
 
+
 export default NftProfile;

@@ -3,14 +3,13 @@ import { Link } from 'react-router-dom';
 import styled, { useTheme } from 'styled-components';
 import { CgMenuRightAlt as MenuIcon } from 'react-icons/cg';
 import useMatchBreakpoints from '../../hooks/useMatchBreakpoints';
-import { Card, Text } from '../Foundation';
+import { Text } from '../Foundation';
 import SearchBar from '../SearchBar';
 import { LogoWhite } from '../svgs';
 import { NFTCollectionMetadata } from '../../types/collection';
 import { NFT } from '../../types/nft';
 import useStore from '../../state/store';
-import { getId } from '../../utils/utils';
-import CircleAvatar from '../CircleAvatar';
+import SearchResults from './SearchResults';
 
 type SearchResults = {
     nfts: NFT[];
@@ -18,7 +17,6 @@ type SearchResults = {
 }
 const NavHeader = () => {
     const store = useStore();
-    const theme = useTheme();
     const searchbarRef = useRef(null);
     const { isMobile } = useMatchBreakpoints();
     const [searchKey, setSearchKey] = useState('')
@@ -110,67 +108,31 @@ const NavHeader = () => {
                     (searchResults.nfts.length > 0 ||
                     searchResults.collections.length > 0 )
                         && showResults
-                        ? (<SearchResultWrapper>
-                            <Card>
-                                {searchResults.nfts.length > 0 &&
-                                        (
-                                            <div style={{padding: '16px 0'}}>
-                                                <Text bold color={theme.colors.textHighlight} style={{marginLeft: '16px'}}>NFTs</Text>
-                                                <ul>
-                                                    <SearchResultsList>
-                                                        {searchResults.nfts.slice(0, 8).map((nft) => (
-                                                            <li key={getId(nft, {})}>
-                                                                <Link to={`/nfts/${getId(nft, {})}`}>
-                                                                    <Text lineHeight="4em" style={{maxWidth: '160px'}}>{nft.name}</Text>
-                                                                </Link>
-                                                            </li>
-                                                        ))}
-                                                    </SearchResultsList>
-                                                </ul>
-                                            </div>
-                                        )}
-                                {searchResults.collections.length > 0 &&
-                                        (
-                                            <div >
-                                                <Text bold color={theme.colors.textHighlight} style={{marginLeft: '16px'}}>Collections</Text>
-                                                <ul>
-                                                    <SearchResultsList>
-                                                        {searchResults.collections.slice(0, 8).map((collection) => (
-                                                            <li key={getId(collection, {isCollection: true})}>
-                                                                <Link to={`/nfts/${getId(collection, {isCollection: true})}`} style={{display: 'grid', gridTemplateColumns: '1fr auto', justifyContent: 'space-between'}}>
-                                                                    <Text lineHeight="4em" style={{maxWidth: '160px'}}>{collection.collectionDict.name}</Text>
-                                                                    <CircleAvatar src={`${collection.collectionDict.avatarImageUrl}`} alt={collection.collectionDict.name} size="40px"/>
-                                                                </Link>
-                                                            </li>
-                                                        ))}
-                                                    </SearchResultsList>
-                                                </ul>
-                                            </div>
-                                        )}
-                            </Card>
-                        </SearchResultWrapper>)
+                        ? (<SearchResults searchResults={searchResults}/>)
                         : (<></>)
                 }
                 
             </div>
-            {
-                isMobile 
-                    ? (
-                        <NavButtons>
-                            <MenuIcon />
-                        </NavButtons>
-                    )
-                    : (
-                        <NavButtons>
-                            <Link className="menu-item" to="/collections">
-                                <Text fontWeight="600">Collections</Text>
-                            </Link>
-                            <Link className="menu-item" to="/nfts">
-                                <Text fontWeight="600">NFTs</Text>
-                            </Link>
-                        </NavButtons>
-                    )
-            }
+            <div>
+                {
+                    isMobile 
+                        ? (
+                            <NavButtons>
+                                <MenuIcon />
+                            </NavButtons>
+                        ) 
+                        : (
+                            <NavButtons>
+                                <Link className="menu-item" to="/collections">
+                                    <Text fontWeight="600">Collections</Text>
+                                </Link>
+                                <Link className="menu-item" to="/nfts">
+                                    <Text fontWeight="600">NFTs</Text>
+                                </Link>
+                            </NavButtons>
+                        )
+                }
+            </div>
             
         </HeaderWrapper>
     )
@@ -180,9 +142,10 @@ const HeaderWrapper = styled.div`
     width: 100vw;
     height: 80px;
     display: grid;
-    grid-auto-flow: column;
+    grid-template-columns: auto auto auto;
     align-items: center;
-
+    grid-gap: 16px;
+    justify-content: space-between;
 `;
 
 const LogoWrapper = styled(Link)<{width: string}>`
@@ -201,7 +164,9 @@ const NavButtons = styled.div`
     display: grid;
     grid-auto-flow: column;
     align-items: center;
-    justify-content: space-evenly;
+    justify-content: space-between;
+    grid-gap: 64px;
+    margin-right: 48px;
 
     .menu-item {
         text-decoration: none; 
@@ -211,33 +176,29 @@ const NavButtons = styled.div`
         width: 25px;
         height: 25px;
     }
-`;
 
-const SearchResultWrapper = styled.div`
-    position: absolute;
-    top: 100%;
-    left: 0;
-    right: 0;
-    margin-top: 8px;
-    max-height: 500px;
-    overflow-y: scroll;
-    overflow-x: hidden;
-    z-index: 80;
+    @media(max-width: 638px) {
+        background: transparent;
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        margin-right: 16px;
+        transition: background ease-in-out 0.2s;
 
-    > * li {
-        list-style: none;
+        &:hover {
+            background: ${props => props.theme.colors.buttonSurface};
+            transition: background ease-in-out 0.2s;
+        }
+
+        &:active {
+            background: ${props => props.theme.colors.buttonSurface};
+            transition: background ease-in-out 0.2s;
+        }
     }
-
-    > * a {
-        text-decoration: none;
-    }
 `;
-
-const SearchResultsList = styled.div`
-    padding: 16px;
-    display: grid;
-    grid-auto-flow: row;
-`;
-
 
 export default NavHeader;

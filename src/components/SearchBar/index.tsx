@@ -1,22 +1,17 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import styled from 'styled-components';
+import styled, { useTheme } from 'styled-components';
 import { RiSearchLine as SearchIcon } from 'react-icons/ri';
-import { Card, Text } from '../Foundation';
+import { Card } from '../Foundation';
 
 const SearchBar = ({
-    // searchState,
     changeHandler,
 }: {
-    // searchState: string;
     changeHandler: (e: any) => void;
 }) => {
+    const theme = useTheme()
     const [query, setQuery] = useState('')
-    // const [activeState, setActiveState] = useState('idle')
     const [isVisible, setIsVisible] = useState(false)
-    // const [isClearable, setIsClearable] = useState(false)
     const wrapperRef = useRef(null)
-
-    // hideMenuOnOutsideClicked(wrapperRef, setIsVisible)
 
     useEffect(() => {
         /**
@@ -40,32 +35,18 @@ const SearchBar = ({
 
   const inputHandler = useCallback(
     (e: any) => {
-    //   if (e.target.value === '') {
-    //     setIsClearable(false)
-    //   } else {
-    //     setIsClearable(true)
-    //   }
       setQuery(e.target.value)
       changeHandler(e.target.value)
     },
     [changeHandler],
   )
 
-//   useEffect(() => {
-//     if (isVisible) {
-//       setActiveState('active')
-//     } else {
-//       setActiveState('idle')
-//     }
-//   }, [isVisible])
-
-
   const handleFocus = useCallback(() => {
     setIsVisible(true)
   }, [])
     
     return (
-        <Card height="45px" style={{cursor: 'pointer'}}>
+        <Card height="45px" style={{cursor: 'pointer'}} boxShadow="none" background={theme.colors.tertiary}>
             <SearchBarWrapper onFocus={handleFocus}>
                 <Input 
                     type="text"

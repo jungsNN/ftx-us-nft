@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import styled, { useTheme } from 'styled-components';
+import styled from 'styled-components';
 import { 
     FaDiscord  as DiscordIcon,
     FaTwitter as TwitterIcon,
@@ -16,7 +16,6 @@ import CircleAvatar from '../../../components/CircleAvatar';
 
 const CollectionProfile = () => {
     const store = useStore();
-    const theme = useTheme();
     const navigate = useNavigate();
     const { isMobile } = useMatchBreakpoints();
     const [collection, setCollection] = useState<NFTCollectionMetadata>();
@@ -59,7 +58,7 @@ const CollectionProfile = () => {
                     <div />
                     <TitleOverlay>
                         <Wrapper by="col" align="center" justify="start" gap="16px">
-                            <CircleAvatar src={`${collection.collectionDict.avatarImageUrl}`} alt={`${collection.collectionDict.avatarImageId}`} />
+                            <CircleAvatar src={`${collection.collectionDict.avatarImageUrl}`} alt={`collection-avatar ${collection.collectionDict.avatarImageId ?? ''}`} />
                             <Text bold 
                                 fontSize={typography.h1Regular.fontSize} 
                                 style={{height: '100%', marginLeft: '8px', marginTop: '32px', textAlign: 'center'}}
@@ -70,12 +69,16 @@ const CollectionProfile = () => {
                     </TitleOverlay>
                     <TitleOverlay>
                         <SocialIcons by="col" gap="32px" pr="24px">
-                            <DiscordIcon />
-                            <TwitterIcon />
+                            <IconWrapper>
+                                <DiscordIcon />
+                            </IconWrapper>
+                            <IconWrapper>
+                                <TwitterIcon />
+                            </IconWrapper>
                         </SocialIcons>
                 </TitleOverlay>
                 </div>
-                <Card height="100%" width="100%" background="transparent">
+                <Card height="100%" width="100%" background="transparent" boxShadow="none">
                     <ImgWrapper width="100%" height="100%">
                         <img src={`${collection!.collectionDict.bannerImageUrl}`} alt={`${collection!.collectionDict.bannerImageId}`} />
                     </ImgWrapper>
@@ -100,15 +103,6 @@ const CollectionProfile = () => {
                                 <NFTCard nft={nft} collection={collection} onSelect={() => handleNavigate(getId(nft, {}))} />
                             ))}
                     {!nftsLoaded && <Text>Loading...</Text>}
-                    {/* {nfts && nfts.length > 0
-                        ? (
-                            Object.values(nfts).map(nft => (
-                                <NFTCard nft={nft} collection={collection} onSelect={() => handleNavigate(getId(nft, {}))} />
-                            ))
-                        )
-                        : nfts && nfts.length === 0 
-                            ? <Text>No NFTs to show</Text>
-                            : <Text>Loading...</Text>} */}
                 </GridView>
             </Wrapper>
         </Page>
@@ -153,6 +147,17 @@ const SocialIcons = styled(Wrapper)`
         width: 25px;
         height: 25px;
     }
+`;
+
+const IconWrapper = styled.div`
+    padding: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    background: ${props => props.theme.colors.buttonSurface};
+    box-shadow: ${props => props.theme.shadows.default};
+    cursor: pointer;
 `;
 
 export default CollectionProfile;

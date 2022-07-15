@@ -65,7 +65,7 @@ const NFTCard: React.FC<NFTCardProps> = ({ nft, collection, onSelect }) => {
                 <TitleOverlay>
                     <TextWrapper>
                         <Link to={`/nfts/${getId(nft, {isCollection: false})}`}>
-                            <Text className='collection-name' bold >
+                            <Text className='collection-name' bold style={{maxWidth:`calc(${(cardWidth())} / 1.4)`}}>
                                 {nft.name}
                             </Text>
                         </Link>

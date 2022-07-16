@@ -1,7 +1,8 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useCallback, useState } from 'react';
 import styled, { useTheme } from 'styled-components';
 import { Page, Spacer, Text, Wrapper } from '../../components/Foundation';
 import Title from '../../components/Foundation/Title';
+import Select from '../../components/Select';
 import useMatchBreakpoints from '../../hooks/useMatchBreakpoints';
 import useStore from '../../state/store';
 import ExploreCollections from './Collections/ExploreCollections';
@@ -24,6 +25,10 @@ const NFTMarket: FC<NFTMarketProps> = (props) => {
         setMaxItems(newMax)
     }
 
+    const handleSelectMaxItems = useCallback((e: string) => {
+        setMaxItems(parseInt(e))
+    }, [])
+
     return (
         <Page className="nft-explore-page">
             <Spacer h={theme.spacing[6]}/>
@@ -36,12 +41,11 @@ const NFTMarket: FC<NFTMarketProps> = (props) => {
                     </div>
                 </TitleWrapper>
                 <FilterWrapper>
-                    <select onChange={(e) => handleSetMax(parseInt(e.target.value))}>
-                        <option selected={maxItems === 30}>30</option>
-                        <option selected={maxItems === 60}>60</option>
-                        <option selected={maxItems === 100}>100</option>
-                        <option selected={maxItems === 150}>150</option>
-                    </select>
+                    <Select 
+                        onOption={handleSelectMaxItems} 
+                        currentOption={`${maxItems}`} 
+                        options={['30', '50', '100']} 
+                    />
                 </FilterWrapper>
             </Wrapper>
             <Wrapper 

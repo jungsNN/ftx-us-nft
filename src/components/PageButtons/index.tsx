@@ -23,10 +23,6 @@ const PageButtons: FC<PageButtonsProps> = (props) => {
         onChange(pg - 1)
     }
 
-    useEffect(() => {
-        console.log('batch ', batchIndex)
-    }, [batchIndex])
-
     const pageNumArray = () => {
         if (isLastPage) {
             return Array(currentPage - (batchIndex * 5))

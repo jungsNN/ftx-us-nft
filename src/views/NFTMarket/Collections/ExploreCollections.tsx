@@ -18,7 +18,7 @@ const ExploreCollections = ({data, maxItems}: {data: NFTCollectionMetadata[], ma
 
     const handleScrollToTop = useCallback((e: any) => {
         if (e?.target?.value === bottomRef.current &&  visible) {
-            console.log('clicked to top.')
+            // console.log('clicked to top.')
             bottomRef!.current!.scrollIntoView({ behavior: 'smooth' })
         }
 
@@ -28,10 +28,10 @@ const ExploreCollections = ({data, maxItems}: {data: NFTCollectionMetadata[], ma
         if (bottomRef.current) {
             window.addEventListener('scroll', () => {
                 if (window.scrollY > 100) {
-                console.log('window.scrollY > 100', window.scrollY)
+                // console.log('window.scrollY > 100', window.scrollY)
                 setVisible(true)
                 } else {
-                console.log('to top button off.')
+                // console.log('to top button off.')
                 setVisible(false)
                 }});
         window.addEventListener('click', handleScrollToTop)

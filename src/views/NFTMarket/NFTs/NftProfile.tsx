@@ -1,19 +1,35 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import styled, { useTheme } from 'styled-components';
+import CircleAvatar from '../../../components/CircleAvatar';
 import { Card, Page, Text, Wrapper } from '../../../components/Foundation';
 import useMatchBreakpoints from '../../../hooks/useMatchBreakpoints';
 import useStore from '../../../state/store';
 import { typography } from '../../../style/typography';
+import { NFTCollectionMetadata } from '../../../types/collection';
 import { NFT } from '../../../types/nft';
-import { getId } from '../../../utils/utils';
 
-const DetailColumn = ({nft, isMobile}: {
-    nft: NFT,
+const DetailColumn = ({nft, collection, isMobile}: {
+    nft: NFT;
+    collection?: NFTCollectionMetadata | null;
     isMobile: boolean
 }) => {
+    
     return isMobile ? (
         <Wrapper >
-
+            <Card>
+                <Wrapper by="col" justify="space-between" items="center">
+                    {collection && 
+                        <CircleAvatar 
+                            src={`${collection.collectionDict.avatarImageUrl}`} 
+                            alt={collection.collectionDict.name} 
+                            />}
+                    {!collection && <div style={{width: '60px', height: '60px'}} />}
+                    <Wrapper>
+                        <Text fontSize={typography.label.fontSize}>Collection</Text>
+                        <Text fontWeight="600">{collection ? collection.collectionDict.name : ""}</Text>
+                    </Wrapper>
+                </Wrapper>
+            </Card>
         </Wrapper>
     ) : (
         <Wrapper by="col" >
@@ -28,21 +44,37 @@ const NftProfile = () => {
     const store = useStore();
     const theme = useTheme();
     const { isMobile, isTablet } = useMatchBreakpoints();
+    const [loaded, setLoaded] = useState(false);
+    const [collection, setCollection] = useState<NFTCollectionMetadata | null>()
     const [nft, setNFT] = useState<NFT>();
 
     useEffect(() => {
         if (typeof window !== "undefined") {
             const pathname = window.location.pathname;
-            console.log('path', pathname)
             const nftId = pathname.split('/')[pathname.split('/').length - 1]
-
-            console.log('nft id', nftId)
-            const filteredNft = store.nfts.find(n => getId(n, {}) === nftId)
+    
+            const filteredNft = store.nfts.find(n => `${n.id}` === nftId.split('-')[1])
             if (filteredNft && typeof filteredNft !== "undefined") {
                 setNFT(filteredNft)
             }
         }   
-    }, [store.nfts])
+    }, [store.nfts, ])
+    
+    const getNftCollection = useCallback(() => {
+        if (nft) {
+            const filtered = store.collections.find((c) => `${c.collectionDict.name}`.toLowerCase() === nft.name.toLowerCase());
+            // setCollection(filtered ?? null)
+            // setLoaded(true)
+            return filtered
+        }
+        return null
+    }, [store.collections, nft])
+
+    // useEffect(() => {
+    //     getNftCollection()
+    //     // setCollection(c.length > 0 ? c[0] : null)
+            
+    // }, [getNftCollection])
 
     return nft ? (
         <Page>
@@ -53,13 +85,13 @@ const NftProfile = () => {
                 >
                     {nft.name}
                 </Text>
-                <Card height="100%" width="100%" background="transparent">
-                    <ImgWrapper width="calc(100vw / 1.5)" height="100%">
+                <Card height="100%" width="100%" background="transparent" boxShadow="none">
+                    <ImgWrapper width={isMobile ? "100%" : "calc(100vw / 1.5)"} height="100%">
                         <img src={`${nft.imageUrl}`} alt={`${nft.name}`} />
                     </ImgWrapper>
                 </Card>
 
-                <DetailColumn nft={nft} isMobile={isMobile || isTablet} />
+                <DetailColumn nft={nft} collection={getNftCollection()} isMobile={isMobile || isTablet} />
             </Wrapper>
         </Page>
     ) : (<></>)

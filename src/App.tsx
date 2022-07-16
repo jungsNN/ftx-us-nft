@@ -8,6 +8,7 @@ import { NFT } from './types/nft';
 import Landing from './views/Landing/Landing';
 import NFTMarket from './views/NFTMarket';
 import CollectionProfile from './views/NFTMarket/Collections/CollectionProfile';
+import NftProfile from './views/NFTMarket/NFTs/NftProfile';
 
 function App() {
   const store = useStore();
@@ -130,6 +131,7 @@ useEffect(() => {
         <Route path="/collections" element={<NFTMarket isCollection />} />
         <Route path="/collections/:key" element={<CollectionProfile />} />
         <Route path="/nfts" element={<NFTMarket />} />
+        <Route path="/nfts/:Key" element={<NftProfile />} />
       </Routes>
     </BrowserRouter>
   );

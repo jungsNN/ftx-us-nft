@@ -31,7 +31,7 @@ const Landing: FC = () => {
 
     const getFeaturedCollections = () => {
         const featured =  store.collections.filter(c => c.collectionDict.featured === true);
-        console.log('featured', featured)
+
         return featured
     }
 

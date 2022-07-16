@@ -24,10 +24,8 @@ const CollectionProfile = () => {
     useEffect(() => {
         if (typeof window !== "undefined") {
             const pathname = window.location.pathname;
-            console.log('path', pathname)
             const collectionId = pathname.split('/')[pathname.split('/').length - 1]
 
-            console.log('collection id', collectionId)
             const filteredCollection = store.collections.find(c => `${c.collectionDict.id}` === collectionId)
             if (filteredCollection && typeof filteredCollection !== "undefined") {
                 setCollection(filteredCollection)
@@ -38,7 +36,7 @@ const CollectionProfile = () => {
     const getCollectionNfts = useCallback(() => {
         if (collection) {
             const filtered = store.nfts.filter(nft => nft.collection.toLowerCase() === collection!.collectionDict.name.toLowerCase());
-            console.log('filtered nfts', filtered)
+
             setLoaded(true)
             return [...filtered]
         }

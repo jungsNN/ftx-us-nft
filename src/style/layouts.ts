@@ -2,7 +2,7 @@ import { MediaQueries, Breakpoints, Spacing } from "./types";
 
 export const breakpointMap: { [key: string]: number } = {
   mobile: 639,
-  tablet: 1023,
+  tablet: 1024,
   desktop: 2560,
 };
 
@@ -29,10 +29,10 @@ const zIndices = {
 
 const sizes = {
   card: {
-    default: 'calc(100vw / 3.4)',
-    small: '287px',
+    default: 'calc(100vw / 4)',
+    small: 'calc(100vw / 6)',
     mobile:  '100%',
-    tablet: 'calc(100vw / 3.3)'
+    tablet: 'calc(100vw / 4)'
   },
   button: {
     default: '160px',

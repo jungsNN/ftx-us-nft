@@ -10,6 +10,7 @@ import { NFTCollectionMetadata } from '../../types/collection';
 import { NFT } from '../../types/nft';
 import useStore from '../../state/store';
 import SearchResults from './SearchResults';
+import DropdownMenu from '../DropdownMenu';
 
 type SearchResults = {
     nfts: NFT[];
@@ -18,7 +19,9 @@ type SearchResults = {
 const NavHeader = () => {
     const store = useStore();
     const searchbarRef = useRef(null);
+    const mobileMenuRef = useRef(null);
     const { isMobile } = useMatchBreakpoints();
+    const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const [searchKey, setSearchKey] = useState('')
     const [searchResults, setSearchResults] = useState<SearchResults>({
         nfts: [],
@@ -84,7 +87,16 @@ const NavHeader = () => {
         function handleClickOutside(event: any) {
             // @ts-ignore
             if (searchbarRef?.current && !searchbarRef.current.contains(event.target)) {
+               console.log('search bar ref')
                 setShowResults(false)
+               
+            }
+            if (mobileMenuRef?.current && 
+                // @ts-ignore
+                (!mobileMenuRef?.current.contains(event.target) )
+            ) {
+                console.log('menu bar ref')
+                setMobileMenuOpen(false)
             }
         }
 
@@ -95,6 +107,11 @@ const NavHeader = () => {
             document.removeEventListener("mousedown", handleClickOutside)
         };
     }, [searchbarRef?.current])
+
+    const toggleMobileMenu = () => {
+        setShowResults(false)
+        setMobileMenuOpen(!mobileMenuOpen)
+    }
 
       
     return (
@@ -111,13 +128,12 @@ const NavHeader = () => {
                         ? (<SearchResults searchResults={searchResults}/>)
                         : (<></>)
                 }
-                
             </div>
-            <div>
+            <div style={{position: 'relative'}}>
                 {
                     isMobile 
                         ? (
-                            <NavButtons>
+                            <NavButtons onClick={toggleMobileMenu}>
                                 <MenuIcon />
                             </NavButtons>
                         ) 
@@ -132,8 +148,16 @@ const NavHeader = () => {
                             </NavButtons>
                         )
                 }
+                    
+                {/* {mobileMenuOpen && (
+                    <MobileMenuWrapper>
+                        <DropdownMenu options={[]}/>
+                    </MobileMenuWrapper>
+                )} */}
             </div>
-            
+            {mobileMenuOpen && <MobileMenuWrapper ref={mobileMenuRef}>
+                        <DropdownMenu options={[]}/>
+                    </MobileMenuWrapper>}
         </HeaderWrapper>
     )
 }
@@ -199,6 +223,14 @@ const NavButtons = styled.div`
             transition: background ease-in-out 0.2s;
         }
     }
+`;
+
+const MobileMenuWrapper = styled.div`
+    position: absolute;
+    top: 80px;
+    left: 0;
+    right: 0;
+    z-index: 99;
 `;
 
 export default NavHeader;

@@ -50,7 +50,7 @@ const ButtonWrapper = styled.div<{visible?: boolean}>`
     justify-items: end;
     position: sticky;
     bottom: 5%;
-    right: 0%;
+    width: calc(100vw - 64px);
     z-index: ${({ visible }) => visible ? 99 : 0};
     transition: opacity 0.2s ease-in;
     opacity: ${({ visible }) => visible ? 1 : 0};

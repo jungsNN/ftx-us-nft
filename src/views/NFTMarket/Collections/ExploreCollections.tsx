@@ -51,15 +51,14 @@ const ExploreCollections = ({data, maxItems}: {data: NFTCollectionMetadata[], ma
     return (
         <div>
             <Text>{`Showing ${data.length} items`}</Text>
-            
-            {data.length > 0 && <GridView>
+            <GridView>
                 {data.slice(maxItems * (currentPage - 1), maxItems * (currentPage - 1) + maxItems)
                     .map(collection => (
                         <div key={collection.collectionDict.id}>
                             <NFTCollectionCard collection={collection} onSelect={() => handleNavigate(collection) } />
                         </div>
                     ))}
-            </GridView>}
+            </GridView>
             <ToTopAnchorDiv  ref={bottomRef}/>
             <Spacer h={theme.spacing[4]} />
             {!isMobile && visible && <ScrollToTopButton visible={visible}/>}

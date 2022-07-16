@@ -16,7 +16,6 @@ const Landing: FC = () => {
     const theme = useTheme();
     const store = useStore();
     const navigate = useNavigate();
-    
     const previewCollections = useMemo(() => store.collections.slice(0, 9), [store.collections])
     const previewNfts = useMemo(() => store.nfts.slice(0, 9), [store.nfts])
     
@@ -47,7 +46,7 @@ const Landing: FC = () => {
             </TitleWrapper>
             <Wrapper justify="center" items="center" gap={`${theme.spacing[4]}px`}>
                 {previewCollections.length > 0 
-                    ?  <CollectionsPreview gap="32px">
+                    ?  <CollectionsPreview>
                             {Object.values(previewCollections).map(c => (
                                 <NFTCollectionCard 
                                     key={getId(c, {isCollection: true})} 
@@ -112,6 +111,9 @@ const TitleWrapper = styled.div`
     padding: 32px;
     text-align: left;
     width: 100%;
-    max-width: 1400px;
+
+    @media(min-width: 639px) {
+        max-width: 1400px;
+    }
 `;
 export default Landing;

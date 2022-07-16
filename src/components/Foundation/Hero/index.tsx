@@ -7,19 +7,19 @@ interface HeroProps extends ContainerProps {
     backgroundImgUrl?: string;
 }
 
-const Hero: React.FC<HeroProps> = ({backgroundImgUrl, height, children }) => {
+const Hero: React.FC<HeroProps> = ({backgroundImgUrl, width, height, children }) => {
     return (
-        <div style={{position: 'relative'}}>
-        <HeroCard height={height}>
-            <ContentWrapper>
-                {children}
-            </ContentWrapper>
-            {backgroundImgUrl && (
-                <ImgWrapper>
-                    <img src={backgroundImgUrl} alt="hero-card-bg"/>
-                </ImgWrapper>
-            )}
-        </HeroCard>
+        <div style={{position: 'relative', width: width}}>
+            <HeroCard height={height}>
+                <ContentWrapper>
+                    {children}
+                </ContentWrapper>
+                {backgroundImgUrl && (
+                    <ImgWrapper>
+                        <img src={backgroundImgUrl} alt="hero-card-bg"/>
+                    </ImgWrapper>
+                )}
+            </HeroCard>
         </div>
 
     );
@@ -30,17 +30,25 @@ const HeroCard = styled.div<{height?: string}>`
     width: 100%;
     overflow: hidden;
     align-items: center;
-    padding: 16px 32px;
     display: flex;
     background: ${({ theme}) => theme.colors.gradient};
     box-shadow: ${props => props.theme.shadows.card};
-    border-radius: 32px;
+    border-radius: 16px;
     max-width: 1200px;
+    padding: 24px 16px;
+
+    @media(min-width: 638px) {
+        padding: 16px 32px;
+        border-radius: 32px;
+    }
 `;
 
 const ContentWrapper = styled(Wrapper)`
-    padding: 1rem;
     z-index: 1;
+
+    @media(min-width: 638px) {
+        padding: 1rem;
+    }
 `;
 
 const ImgWrapper = styled.div`
@@ -53,7 +61,6 @@ const ImgWrapper = styled.div`
     height: 100%;
     z-index: 0;
     opacity: 0.3;
-
     overflow:hidden;
 
     img {

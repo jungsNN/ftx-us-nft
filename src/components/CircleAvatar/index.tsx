@@ -4,7 +4,7 @@ import styled from 'styled-components';
 const CircleAvatar = ({src, alt, size}: {
     src: string;
     alt: string;
-    size?: string;
+    size?: string | null;
 }) => {
     return (
         <AvatarWrapper size={size ?? '60px'}>

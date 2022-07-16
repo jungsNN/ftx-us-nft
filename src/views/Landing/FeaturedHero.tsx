@@ -11,11 +11,13 @@ const FeaturedHero = ({collection}: {collection?: NFTCollectionMetadata}) => {
     const { isMobile, isTablet } = useMatchBreakpoints();
     const theme = useTheme();
     const boxHeight = isMobile || isTablet ? '100%' : '500px';
-    const imgSize = isMobile || isTablet ? '100%' : '450px'
+    const imgSize = isMobile || isTablet ? '100%' : '450px';
+    const titleSize = isMobile ? '36px' : '40px';
+    const detailSize = isMobile ? '30px' : '34px';
 
     const featuredImg = () => {
         return (
-            <Card>
+            <Card background="transparent" boxShadow="none">
                 <ImgWrapper width={imgSize} height={imgSize}>
                     <img src={`${collection!.collectionDict.cardImageUrl}`} alt={`${collection!.collectionDict.name}`} />
                 </ImgWrapper>
@@ -31,7 +33,8 @@ const FeaturedHero = ({collection}: {collection?: NFTCollectionMetadata}) => {
                 <Wrapper gap="8px">
                     <Text
                         fontWeight="600" 
-                        fontSize="40px"
+                        fontSize={titleSize}
+                        style={{textAlign: 'center'}}
                     >
                         {collectionDict.name}
                     </Text>
@@ -42,12 +45,12 @@ const FeaturedHero = ({collection}: {collection?: NFTCollectionMetadata}) => {
                 <DetailBox>
                     <DetailWrapper by="col">
                         <Wrapper items="center">
-                            <Text bold fontSize="34px" >{`NFTs`}</Text>
-                            <Text fontSize="34px" >{`${collection!.total}`}</Text>
+                            <Text bold fontSize={detailSize} >{`NFTs`}</Text>
+                            <Text fontSize={detailSize} >{`${collection!.total}`}</Text>
                         </Wrapper>
                         <Wrapper items="center">
-                            <Text bold fontSize="34px" >{`Volume`}</Text>
-                            <Text fontSize="34px" >{`$${commafy(`${collection!.volume}`.split('.')[0])}.${`${collection!.volume}`.split('.')[0].slice(0, 2)}`}</Text>
+                            <Text bold fontSize={detailSize} >{`Volume`}</Text>
+                            <Text fontSize={detailSize} >{`$${commafy(`${collection!.volume}`.split('.')[0])}.${`${collection!.volume}`.split('.')[0].slice(0, 2)}`}</Text>
                         </Wrapper>
                     </DetailWrapper>
                 </DetailBox>
@@ -60,11 +63,11 @@ const FeaturedHero = ({collection}: {collection?: NFTCollectionMetadata}) => {
             <Text bold 
                 fontSize={typography.h1Regular.fontSize} 
                 color={theme.colors.textHighlight}
-                style={{marginLeft: '8px', marginTop: '32px', width: '100%'}}
+                style={{marginLeft: '8px', letterSpacing: '0.02em', marginTop: '32px', width: '100%', textAlign: isMobile ? 'center': 'left'}}
             >
                 Featured Collections
             </Text>
-            <Hero height={boxHeight} width="100%" backgroundImgUrl={`${collection.collectionDict.bannerImageUrl}`}>
+            <Hero height={boxHeight} width={isMobile ? '100vw' : "100%"} backgroundImgUrl={`${collection.collectionDict.bannerImageUrl}`}>
                 {isMobile ||isTablet 
                     ? (
                         <Wrapper justify="center" gap="8px" style={{zIndex: 1}}>
@@ -115,7 +118,10 @@ const ImgWrapper = styled.div<{
 const DetailBox = styled.div`
     background: #2b2e3b70;
     border-radius: ${props => props.theme.radii.small};
-    padding: 16px 32px;
+    
+    @media(min-width: 638px) {
+        padding: 16px 32px;
+    }
 `
 
 const DetailWrapper = styled(Wrapper)`

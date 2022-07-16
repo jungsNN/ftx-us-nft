@@ -21,7 +21,7 @@ const NFTCard: React.FC<NFTCardProps> = ({ nft, collection, onSelect }) => {
     const cardWidth = () => {
     
         if (isMobile) {
-            return 'calc(100vw - 64px)'// theme.sizes.card.mobile;
+            return 'calc(100vw - 16px)'// theme.sizes.card.mobile;
         } else if (isTablet) {
             return theme.sizes.card.tablet;
         }
@@ -72,14 +72,14 @@ const NFTCard: React.FC<NFTCardProps> = ({ nft, collection, onSelect }) => {
                         {(collection && typeof collection !== 'undefined') && 
                         <Link to={`/collections/${getId(collection, {isCollection: true})}`}>
                             <CircleAvatar 
-                                size="35px" 
+                                size={isTablet ? "28px" : "35px" }
                                 src={`${collection.collectionDict.avatarImageUrl ?? collection.firstNft.imageUrl}`} 
                                 alt={`${collection.collectionDict.name}`} />
                         </Link>}
                     </TextWrapper>
                     <div className="nft-details-box" style={{padding: '0 8px', alignItems: 'center', display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', justifyContent: 'space-between'}}>
-                        <Text style={{textAlign: 'left',maxWidth: '80px'}}>{nft.offerPrice ? nft.offerPrice + ` ${nft.quoteCurrency}` : ""}</Text>
-                        <Text color={theme.colors.textHighlight} fontWeight="600">{auctionEndTime()}</Text>
+                        <Text fontSize={isTablet ? "11px" : "12px"} style={{textAlign: 'left',maxWidth: '80px'}}>{nft.offerPrice ? nft.offerPrice + ` ${nft.quoteCurrency}` : ""}</Text>
+                        <Text fontSize={isTablet ? "11px" : "12px"} color={theme.colors.textHighlight} fontWeight="600">{auctionEndTime()}</Text>
                         <Text fontSize={isTablet ? "11px" : "12px"} style={{width: '100%', textAlign: 'right'}}>{
                             nft.auction?.bestBid 
                                 ? `Last Bid ${nft.auction.bestBid} ${nft.quoteCurrency}` 

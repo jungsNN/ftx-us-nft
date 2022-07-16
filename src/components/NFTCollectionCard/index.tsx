@@ -41,41 +41,36 @@ const NFTCollectionCard: React.FC<NFTCollectionCardProps> = (
                 <ImgWrapper height={`${cardWidth()}`} width={`${cardWidth()}`}>
                     <img height="100%" width="100%" src={`${collectionDict.cardImageUrl}`} alt={collectionDict.name} style={{objectFit: 'cover'}} />
                 </ImgWrapper>
-                <AvatarWrapper>
-                    <CircleAvatar src={`${collectionDict.avatarImageUrl}`} alt={collectionDict.name + ' avatar'} />
+                <AvatarWrapper cardWidth={cardWidth()}>
+                    <CircleAvatar src={`${collectionDict.avatarImageUrl}`} alt={collectionDict.name + ' avatar'} size={isTablet  ? '40px' : isMobile ? '64px' : null}/>
                 </AvatarWrapper>
                 <TitleOverlay onClick={onSelect}>
-                        <ContentWrapper align="start" justify="center" items="center">
-                            <TextWrapper>
-                                <Text 
-                                    className='collection-name' 
-                                    bold 
-                                    fontSize={isTablet ? '12px' : '14px'}
-                                    style={{
-                                        textOverflow: 'ellipses', 
-                                        whiteSpace: 'normal', 
-                                        wordBreak: 'break-word',
-                                        maxHeight: isTablet ? '40px' : '80px'
-                                        }} >
-                                    {collectionDict.name}
-                                </Text>
-                                <div className="collection-title-box" style={{display: 'block'}}>
-                                    <div style={{display: 'inline-flex', alignItems: 'center'}}>
-                                        <Text fontSize={isTablet ? '11px' : '12px'} className='collection-volume'>
-                                            {`${collection.total} NFTs`}
-                                        </Text>
-                                        <div className="collection-title-divider"style={{margin: '0 8px', height: '100%', border: '1px solid white'}} />
-                                        <Text fontSize={isTablet ? '11px' : '12px' } className='collection-volume'>
-                                            {`Volumn ${displayVolume(collection.volume)}`}
-                                        </Text>  
-                                    </div>
+                    <ContentWrapper align="start" justify="center" items="center">
+                        <TextWrapper>
+                            <Text 
+                                className='collection-name' 
+                                bold 
+                                fontSize={isTablet ? '12px' : '14px'}
+                                style={{
+                                    
+                                    maxHeight: isTablet ? '40px' : '60px'
+                                    }} >
+                                {collectionDict.name}
+                            </Text>
+                            <div className="collection-title-box" style={{display: 'block'}}>
+                                <div style={{display: 'inline-flex', alignItems: 'center'}}>
+                                    <Text fontSize={isTablet ? '11px' : '12px'} className='collection-volume' style={{maxHeight: '60px'}}>
+                                        {`${collection.total} NFTs`}
+                                    </Text>
+                                    <div className="collection-title-divider"style={{margin: '0 8px', height: '100%', border: '1px solid white'}} />
+                                    <Text fontSize={isTablet ? '11px' : '12px' } className='collection-volume'>
+                                        {`Volumn ${displayVolume(collection.volume)}`}
+                                    </Text>  
                                 </div>
+                            </div>
                         </TextWrapper>
-                        </ContentWrapper>
-                    </TitleOverlay>
-                {/* <Link to={`/collections/${getId(collection, {isCollection: true})}`} style={{textDecoration: 'none'}}>
-                    
-                </Link> */}
+                    </ContentWrapper>
+                </TitleOverlay>
             </Card>
         </CardWrapper>
     )
@@ -88,7 +83,6 @@ const CardWrapper = styled.div`
 const ContentWrapper = styled(Wrapper)`
     grid-gap: ${props => `${props.theme.spacing[2]}px`};
     overflow: hidden;
-  
 `;
 
 const TextWrapper = styled.div`
@@ -96,14 +90,16 @@ const TextWrapper = styled.div`
     grid-auto-flow: row;
     align-items: center;
     padding: 0 5px;
-    
+
     .collection-name {
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+        white-space: nowrap;
+        word-break: break-words;
+        overflow: hidden;
+        text-overflow: ellipses;
     }
+   
     .token-abbr {
-      text-align: center;
+        text-align: center;
     }
 `;
 
@@ -128,8 +124,8 @@ const TitleOverlay = styled.div`
     background: #222832a3;
     position: absolute;
     top: 59%;
-    left: 10%;
-    right: 10%;
+    left: 5%;
+    right: 5%;
     z-index: 0;
     cursor: pointer;
     transition: all ease-in-out 0.15s;
@@ -140,11 +136,21 @@ const TitleOverlay = styled.div`
     }
 `;
 
-const AvatarWrapper = styled.div`
+const AvatarWrapper = styled.div<{cardWidth: string}>`
     position: absolute;
-    top: 42%;
-    left: 40%;
+    top: ${({cardWidth}) => `calc(${cardWidth} / 2 - 24px)`};
+    left: ${({cardWidth}) => `calc(${cardWidth} / 2 - 28px)`};
     z-index: 1;
+
+    @media(min-width: 638px) {
+        top: 42%;
+        left: 40%;
+    }
+
+    @media(min-width: 1024px) {
+        top: 38%;
+        left: 40%;
+    }
 `;
 
 export default NFTCollectionCard;

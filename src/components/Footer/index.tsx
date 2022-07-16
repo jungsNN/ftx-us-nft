@@ -21,6 +21,7 @@ const LogoWrapper = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
+    
     svg {
 
         width: 100px;

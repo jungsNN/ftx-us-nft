@@ -1,8 +1,7 @@
 
-import React, { FC, useCallback, useEffect, useMemo } from 'react';
+import React, { FC, useCallback, useMemo } from 'react';
 import styled, { useTheme } from 'styled-components';
 import { Page, Spacer, Text, Wrapper } from '../../components/Foundation';
-// import useMatchBreakpoints from '../../hooks/useMatchBreakpoints';
 import Button from '../../components/Foundation/Button';
 import { useNavigate } from 'react-router-dom';
 import useStore from '../../state/store';
@@ -17,7 +16,6 @@ const Landing: FC = () => {
     const theme = useTheme();
     const store = useStore();
     const navigate = useNavigate();
-    // const {isMobile, isTablet} = useMatchBreakpoints();
     
     const previewCollections = useMemo(() => store.collections.slice(0, 9), [store.collections])
     const previewNfts = useMemo(() => store.nfts.slice(0, 9), [store.nfts])
@@ -47,10 +45,9 @@ const Landing: FC = () => {
                     Collections
                 </Title>
             </TitleWrapper>
-            <Spacer h={theme.spacing[5]} />
             <Wrapper justify="center" items="center" gap={`${theme.spacing[4]}px`}>
                 {previewCollections.length > 0 
-                    ?  <CollectionsPreview>
+                    ?  <CollectionsPreview gap="32px">
                             {Object.values(previewCollections).map(c => (
                                 <NFTCollectionCard 
                                     key={getId(c, {isCollection: true})} 
@@ -70,12 +67,12 @@ const Landing: FC = () => {
                 </Button>
             </Wrapper>
             <Spacer h={theme.spacing[6]} />
+            <TitleWrapper>
+                <Title>
+                    Trending NFTs
+                </Title>
+            </TitleWrapper>
             <Wrapper justify="center" items="center" gap={`${theme.spacing[4]}px`}>
-                <TitleWrapper>
-                    <Title>
-                        Trending NFTs
-                    </Title>
-                </TitleWrapper>
                 {previewNfts.length > 0 
                     ? (
                         <TrendingNfts>
@@ -88,7 +85,7 @@ const Landing: FC = () => {
                                 />
                             ))}
                         </TrendingNfts>
-                    ) // <TrendingNfts nfts={previewNfts.slice(0, 9)} onNavigate={handleNavigate}/>
+                    )
                     : store.errors.nftError
                         ? <Text>{store.errors.collectionError}</Text>
                         : <Text>Loading...</Text>
@@ -105,23 +102,16 @@ const Landing: FC = () => {
     );
 }
 
-const TextWrapper = styled.div`
-  height: 30px;
-  display: grid;
-  justify-content: center;
-  align-items: center;
-`
-
 const TrendingNfts = styled(GridView)`
 `;
 
 const CollectionsPreview = styled(GridView)`
-
 `;
 
 const TitleWrapper = styled.div`
     padding: 32px;
     text-align: left;
     width: 100%;
+    max-width: 1400px;
 `;
 export default Landing;

@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useEffect, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import styled, { useTheme } from 'styled-components';
 import { Button, Text } from '../Foundation';
 
@@ -98,7 +98,9 @@ const PageButtons: FC<PageButtonsProps> = (props) => {
 }
 
 const StyledPageButtons = styled.div`
-    display: block;
+    display: flex;
+    width:100%;
+    justify-content: center;
 
     > * .page-btn {
         background: transparent;

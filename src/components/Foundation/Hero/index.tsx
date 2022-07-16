@@ -1,6 +1,5 @@
 import React from 'react';
 import styled from 'styled-components';
-import Card from '../Card';
 import Wrapper from '../Layouts/Wrapper';
 import { ContainerProps } from '../types';
 
@@ -8,10 +7,10 @@ interface HeroProps extends ContainerProps {
     backgroundImgUrl?: string;
 }
 
-const Hero: React.FC<HeroProps> = ({backgroundImgUrl, height, width, children }) => {
+const Hero: React.FC<HeroProps> = ({backgroundImgUrl, height, children }) => {
     return (
         <div style={{position: 'relative'}}>
-        <HeroCard height={height} width={width ?? '100%'}>
+        <HeroCard height={height}>
             <ContentWrapper>
                 {children}
             </ContentWrapper>
@@ -26,10 +25,17 @@ const Hero: React.FC<HeroProps> = ({backgroundImgUrl, height, width, children })
     );
 }
 
-const HeroCard = styled(Card)<{width: string; height?: string}>`
+const HeroCard = styled.div<{height?: string}>`
     height: ${({height}) => height};
-    width: ${({width}) => width};
+    width: 100%;
     overflow: hidden;
+    align-items: center;
+    padding: 16px 32px;
+    display: flex;
+    background: ${({ theme}) => theme.colors.gradient};
+    box-shadow: ${props => props.theme.shadows.card};
+    border-radius: 32px;
+    max-width: 1200px;
 `;
 
 const ContentWrapper = styled(Wrapper)`

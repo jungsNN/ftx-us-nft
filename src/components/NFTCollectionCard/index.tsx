@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import styled, { useTheme } from "styled-components";
 import useMatchBreakpoints from '../../hooks/useMatchBreakpoints';
 import { NFTCollectionMetadata } from '../../types/collection';

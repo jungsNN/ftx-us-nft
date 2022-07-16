@@ -21,7 +21,7 @@ const NFTCard: React.FC<NFTCardProps> = ({ nft, collection, onSelect }) => {
     const cardWidth = () => {
     
         if (isMobile) {
-            return theme.sizes.card.mobile;
+            return 'calc(100vw - 64px)'// theme.sizes.card.mobile;
         } else if (isTablet) {
             return theme.sizes.card.tablet;
         }
@@ -77,15 +77,15 @@ const NFTCard: React.FC<NFTCardProps> = ({ nft, collection, onSelect }) => {
                                 alt={`${collection.collectionDict.name}`} />
                         </Link>}
                     </TextWrapper>
-                    <div style={{padding: '0 8px', alignItems: 'center', display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', justifyContent: 'space-between'}}>
-                        <Text style={{textAlign: 'left',maxWidth: '80px', whiteSpace: 'nowrap', overflow: 'ellipses'}}>{nft.offerPrice ? nft.offerPrice + ` ${nft.quoteCurrency}` : ""}</Text>
-                            <Text color={theme.colors.textHighlight} fontWeight="600">{auctionEndTime()}</Text>
-                            <Text fontSize="12px">{
-                                nft.auction?.bestBid 
-                                    ? `Last Bid ${nft.auction.bestBid} ${nft.quoteCurrency}` 
-                                    : nft.auctionReservationPrice
-                                        ? `Reserve Price ${nft.auctionReservationPrice} ${nft.quoteCurrency}`
-                                        : ''}</Text>
+                    <div className="nft-details-box" style={{padding: '0 8px', alignItems: 'center', display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', justifyContent: 'space-between'}}>
+                        <Text style={{textAlign: 'left',maxWidth: '80px'}}>{nft.offerPrice ? nft.offerPrice + ` ${nft.quoteCurrency}` : ""}</Text>
+                        <Text color={theme.colors.textHighlight} fontWeight="600">{auctionEndTime()}</Text>
+                        <Text fontSize={isTablet ? "11px" : "12px"} style={{width: '100%', textAlign: 'right'}}>{
+                            nft.auction?.bestBid 
+                                ? `Last Bid ${nft.auction.bestBid} ${nft.quoteCurrency}` 
+                                : nft.auctionReservationPrice
+                                    ? `Reserve Price ${nft.auctionReservationPrice} ${nft.quoteCurrency}`
+                                    : ''}</Text>
                     </div>
                 </TitleOverlay>
             </Card>
@@ -93,7 +93,11 @@ const NFTCard: React.FC<NFTCardProps> = ({ nft, collection, onSelect }) => {
     )}
 
 const CardWrapper = styled.div`
-        margin: 16px 8px;
+        margin: 16px 0;
+       
+        @media(min-width: 1200px) {
+            margin: 32px 16px;
+        }
 `;
 
 const TextWrapper = styled.div`
@@ -140,6 +144,13 @@ const TitleOverlay = styled.div`
     background: #111722;
     z-index: 0;
     box-shadow: -2px 2px 4px rgb(25 137 137 / 20%), 2px -2px 4px rgb(155 227 227 / 20%), -2px -2px 4px #00171cad, 2px 2px 5px #00171cad, inset 1px 1px 2px #00171cad, inset -1px -1px 2px rgb(29 30 30 / 47%);
+
+    .nft-details-box {
+        > * {
+            white-space: nowrap;
+            overflow: ellipses;
+        }
+    }
 `;
 
 export default NFTCard;

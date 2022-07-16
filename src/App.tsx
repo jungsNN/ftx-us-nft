@@ -64,32 +64,32 @@ const fetchCollections = (): Promise<NFTCollectionMetadata[] | string> => {
         fetch(NFT_COLLECTIONS_ENDPOINT)
             .then((res) => res.json())
             .then((data) => {
-              const collectionsData: NFTCollectionMetadata[] = [];
-              
-                Object.values(data.result.collections).forEach((collection: any) => {
-                  const collectionDetails: NFTCollectionDict = {
-                    ...collection.collectionDict
-                  }
-                  
-                  collectionsData.push({
-                    collectionDict: collectionDetails,
-                    firstNft: collection['first_nft'],
-                    groupId: collection['group_id'],
-                    groupType: collection['group_type'],
-                    issuer: collection['issuer'],
-                    total: collection['total'],
-                    volume: collection['volume']
-                  } as NFTCollectionMetadata)
-                })
+              const collectionsMap: Map<string, NFTCollectionMetadata> = new Map();
+            
+              data.result.collections.forEach((collection: any) => {
+                const collectionDetails: NFTCollectionDict = {
+                  ...collection.collectionDict
+                }
+                if (!collectionsMap.has(`${collectionDetails.id}`)) {
+                  collectionsMap.set(`${collectionDetails.id}`, {
+                      collectionDict: collectionDetails,
+                      firstNft: collection['first_nft'],
+                      groupId: collection['group_id'],
+                      groupType: collection['group_type'],
+                      issuer: collection['issuer'],
+                      total: collection['total'],
+                      volume: collection['volume']
+                    } as NFTCollectionMetadata)
+                } 
+              })
           
-                resolve(collectionsData)
+              resolve(Array.from(collectionsMap.values()) as NFTCollectionMetadata[])
             })
             .catch((err) =>{
                 console.error(err)
                 reject("Failed to load collections")})
     }) 
 }
-  
 
 useEffect(() => {
     fetchCollections()

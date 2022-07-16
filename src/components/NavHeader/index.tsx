@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import styled, { useTheme } from 'styled-components';
+import styled from 'styled-components';
 import { CgMenuRightAlt as MenuIcon } from 'react-icons/cg';
 import useMatchBreakpoints from '../../hooks/useMatchBreakpoints';
 import { Text } from '../Foundation';
@@ -102,7 +102,7 @@ const NavHeader = () => {
             <LogoWrapper to="/" width={isMobile ? '35px' : '50px'}>
                 <LogoWhite />
             </LogoWrapper>
-            <div ref={searchbarRef} style={{minWidth: '200px', position: 'relative'}}>
+            <div ref={searchbarRef} style={{minWidth: '200px', maxWidth: '500px', position: 'relative'}}>
                 <SearchBar changeHandler={changeHandler}/>
                 { 
                     (searchResults.nfts.length > 0 ||
@@ -142,7 +142,7 @@ const HeaderWrapper = styled.div`
     width: 100vw;
     height: 80px;
     display: grid;
-    grid-template-columns: auto auto auto;
+    grid-template-columns: auto 1fr auto;
     align-items: center;
     grid-gap: 16px;
     justify-content: space-between;

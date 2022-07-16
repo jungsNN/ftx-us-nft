@@ -29,10 +29,10 @@ const zIndices = {
 
 const sizes = {
   card: {
-    default: '345px',
+    default: 'calc(100vw / 3.4)',
     small: '287px',
     mobile:  '100%',
-    tablet: 'calc(100vw / 3.2)'
+    tablet: 'calc(100vw / 3.3)'
   },
   button: {
     default: '160px',

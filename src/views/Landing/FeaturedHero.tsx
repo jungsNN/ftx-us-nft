@@ -10,12 +10,13 @@ import { commafy } from '../../utils/utils';
 const FeaturedHero = ({collection}: {collection?: NFTCollectionMetadata}) => {
     const { isMobile, isTablet } = useMatchBreakpoints();
     const theme = useTheme();
-    const boxHeight = '500px';
+    const boxHeight = isMobile || isTablet ? '100%' : '500px';
+    const imgSize = isMobile || isTablet ? '100%' : '450px'
 
     const featuredImg = () => {
         return (
             <Card>
-                <ImgWrapper width="450px" height="450px">
+                <ImgWrapper width={imgSize} height={imgSize}>
                     <img src={`${collection!.collectionDict.cardImageUrl}`} alt={`${collection!.collectionDict.name}`} />
                 </ImgWrapper>
             </Card>
@@ -55,15 +56,15 @@ const FeaturedHero = ({collection}: {collection?: NFTCollectionMetadata}) => {
     }
 
     return collection ? (
-        <Wrapper gap="32px" justify="center">
+        <Wrapper gap="32px" justify="center" items="center">
             <Text bold 
                 fontSize={typography.h1Regular.fontSize} 
                 color={theme.colors.textHighlight}
-                style={{marginLeft: '8px', marginTop: '32px'}}
+                style={{marginLeft: '8px', marginTop: '32px', width: '100%'}}
             >
                 Featured Collections
             </Text>
-            <Hero height={boxHeight} width="calc(100vw / 1.1)" backgroundImgUrl={`${collection.collectionDict.bannerImageUrl}`}>
+            <Hero height={boxHeight} width="100%" backgroundImgUrl={`${collection.collectionDict.bannerImageUrl}`}>
                 {isMobile ||isTablet 
                     ? (
                         <Wrapper justify="center" gap="8px" style={{zIndex: 1}}>

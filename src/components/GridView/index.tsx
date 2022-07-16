@@ -5,16 +5,19 @@ import useMatchBreakpoints from '../../hooks/useMatchBreakpoints';
 import { Wrapper } from '../Foundation';
 import { WrapperProps } from '../Foundation/types';
 
-const GridView: React.FC<WrapperProps> = ({children}) => {
-    const { isMobile } = useMatchBreakpoints();
+interface GridViewProps extends WrapperProps {
+    gap?: string;
+}
+const GridView: React.FC<GridViewProps> = ({gap, children}) => {
+    const { isMobile, isTablet } = useMatchBreakpoints();
     const theme = useTheme();
 
     return (
-        <Wrapper gap={`${theme.spacing[4]}px`} justify="center" >
+        <Wrapper gap={isTablet ? `${theme.spacing[2]}px` : `${theme.spacing[4]}px`} justify="center" >
             <div style={{
                 display: 'grid',
                 gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr 1fr',
-                gridGap: '1rem',
+                gridGap: gap ?? isTablet ? '8px' : '1rem',
             }}>
 
                 {children}
@@ -24,30 +27,3 @@ const GridView: React.FC<WrapperProps> = ({children}) => {
 }
 
 export default GridView;
-
-
-// {Object.values(data).map(item => 
-//     <div 
-//         onClick={() => {
-//             if (isCollection) {
-//                 console.log(item.groupId)
-//             }else {
-//                 console.log(item.id)
-//             }
-
-//             onSelectItem &&
-//             onSelectItem(isCollection ? item.id : item.groupId)
-//         }}
-//     >
-//     {isCollection 
-//         ? (
-            
-//                 <NFTCollectionCard 
-//                     width={isMobile ? '100%' : isTablet ? '200px' : '300px'}
-//                     collection={item as NFTCollectionMetadata} 
-//                 />
-//         ) : (
-//             <NFTCard nft={item as NFT} />
-//         )}
-//     </div>
-// )}

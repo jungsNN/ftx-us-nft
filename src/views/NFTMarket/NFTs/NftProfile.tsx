@@ -1,50 +1,75 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import styled, { useTheme } from 'styled-components';
+import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+import styled from 'styled-components';
 import CircleAvatar from '../../../components/CircleAvatar';
-import { Card, Page, Text, Wrapper } from '../../../components/Foundation';
+import { Button, Card, Page, Text, Wrapper } from '../../../components/Foundation';
 import useMatchBreakpoints from '../../../hooks/useMatchBreakpoints';
 import useStore from '../../../state/store';
 import { typography } from '../../../style/typography';
 import { NFTCollectionMetadata } from '../../../types/collection';
 import { NFT } from '../../../types/nft';
+import { getId } from '../../../utils/utils';
 
-const DetailColumn = ({nft, collection, isMobile}: {
+const DetailColumn = ({nft, collection, isDesktop}: {
     nft: NFT;
     collection?: NFTCollectionMetadata | null;
-    isMobile: boolean
+    isDesktop: boolean
 }) => {
-    
-    return isMobile ? (
-        <Wrapper >
-            <Card>
-                <Wrapper by="col" justify="space-between" items="center">
-                    {collection && 
-                        <CircleAvatar 
-                            src={`${collection.collectionDict.avatarImageUrl}`} 
-                            alt={collection.collectionDict.name} 
-                            />}
-                    {!collection && <div style={{width: '60px', height: '60px'}} />}
+    const collectionAvatar = () => collection     
+        ? <CircleAvatar 
+            src={`${collection.collectionDict.avatarImageUrl}`} 
+            alt={nft.collection} 
+            size="40px"
+            />
+        : <div style={{width: '40px', height: '40px'}} />
+    const collectionTitle = () => collection
+        ?   <Link to={`/collections/${getId(collection, {isCollection: true})}`}>
+                <Text fontWeight="600">{nft.collection}</Text>
+            </Link>
+        : <div>
+            <Text fontWeight="600">{nft.collection}</Text>
+        </div>
+    const buttonStyle = typography.buttonBold;
+    return (
+        <Card background="transparent" boxShadow="none">
+            <Wrapper gap="32px" padding="16px">
+                <Wrapper by="col" gap="16px" justify="start" align="center">
+                    {collectionAvatar()}
                     <Wrapper>
                         <Text fontSize={typography.label.fontSize}>Collection</Text>
-                        <Text fontWeight="600">{collection ? collection.collectionDict.name : ""}</Text>
+                        {collectionTitle()}
                     </Wrapper>
                 </Wrapper>
-            </Card>
-        </Wrapper>
-    ) : (
-        <Wrapper by="col" >
-            <Wrapper>
-                
+            {/* PRice and buy now */}
+            <Wrapper by="col" align="center" justify="space-between" gap={isDesktop ? "32px" : "8px"}>
+                <Wrapper>
+                    <Wrapper>
+                        <Text fontSize={typography.label.fontSize}>Offer Amount</Text>
+                        <Text fontWeight="600" fontSize="28px">
+                            {nft.offerPrice + ` ${nft.quoteCurrency}`}
+                        </Text>
+                    </Wrapper>
+                    {nft.auctionReservationPrice && 
+                        <Wrapper>
+                            <Text fontSize={typography.label.fontSize}>Offer Amount</Text>
+                            <Text>
+                                {nft.auctionReservationPrice ? nft.auctionReservationPrice : ""}
+                            </Text>
+                        </Wrapper>
+                    }
+                </Wrapper>
+                <Button variant="outlined">
+                    <Text fontSize={buttonStyle.fontSize} fontWeight={buttonStyle.fontWeight}>Buy Now</Text>
+                </Button>
             </Wrapper>
         </Wrapper>
+    </Card>
     )
 }
 
 const NftProfile = () => {
     const store = useStore();
-    const theme = useTheme();
-    const { isMobile, isTablet } = useMatchBreakpoints();
-    const [loaded, setLoaded] = useState(false);
+    const { isMobile, isDesktop } = useMatchBreakpoints();
     const [collection, setCollection] = useState<NFTCollectionMetadata | null>()
     const [nft, setNFT] = useState<NFT>();
 
@@ -52,46 +77,34 @@ const NftProfile = () => {
         if (typeof window !== "undefined") {
             const pathname = window.location.pathname;
             const nftId = pathname.split('/')[pathname.split('/').length - 1]
-    
+            
             const filteredNft = store.nfts.find(n => `${n.id}` === nftId.split('-')[1])
             if (filteredNft && typeof filteredNft !== "undefined") {
                 setNFT(filteredNft)
+
+                const filtered = store.collections.find((c) => `${c.firstNft.collection}`.toLowerCase() === filteredNft.collection.toLowerCase());
+                setCollection(filtered)
             }
         }   
-    }, [store.nfts, ])
-    
-    const getNftCollection = useCallback(() => {
-        if (nft) {
-            const filtered = store.collections.find((c) => `${c.collectionDict.name}`.toLowerCase() === nft.name.toLowerCase());
-            // setCollection(filtered ?? null)
-            // setLoaded(true)
-            return filtered
-        }
-        return null
-    }, [store.collections, nft])
-
-    // useEffect(() => {
-    //     getNftCollection()
-    //     // setCollection(c.length > 0 ? c[0] : null)
-            
-    // }, [getNftCollection])
+    }, [store.nfts, store.collections])
 
     return nft ? (
         <Page>
-            <Wrapper gap="32px">
+            <Wrapper gap="16px" >
                 <Text bold 
                     fontSize={typography.h1Regular.fontSize} 
-                    style={{marginLeft: '8px', marginTop: '32px'}}
+                    style={{marginLeft: '16px', marginTop: '32px'}}
                 >
                     {nft.name}
                 </Text>
-                <Card height="100%" width="100%" background="transparent" boxShadow="none">
-                    <ImgWrapper width={isMobile ? "100%" : "calc(100vw / 1.5)"} height="100%">
-                        <img src={`${nft.imageUrl}`} alt={`${nft.name}`} />
-                    </ImgWrapper>
-                </Card>
-
-                <DetailColumn nft={nft} collection={getNftCollection()} isMobile={isMobile || isTablet} />
+                <Wrapper by={isMobile ? "row" : "col"} justify="start">
+                    <Card height="100%" width="100%" background="transparent" boxShadow="none">
+                        <ImgWrapper width={isMobile ? "100%" : "calc(100vw / 1.5)"} height="100%">
+                            <img src={`${nft.imageUrl}`} alt={`${nft.name}`} />
+                        </ImgWrapper>
+                    </Card>
+                    <DetailColumn nft={nft} collection={collection} isDesktop={isDesktop} />
+                </Wrapper>
             </Wrapper>
         </Page>
     ) : (<></>)

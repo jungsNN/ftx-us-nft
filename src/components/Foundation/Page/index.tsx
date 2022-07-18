@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import styled, { useTheme } from 'styled-components';
 import useMatchBreakpoints from '../../../hooks/useMatchBreakpoints';
 import Text from '../Text';
@@ -34,7 +34,7 @@ const Page: React.FC<React.HTMLAttributes<HTMLDivElement>>  = ({children}) => {
             // Unbind the event listener on clean up
             document.removeEventListener("mousedown", handleClickOutside)
         };
-    }, [mobileMenuRef?.current])
+    }, [mobileMenuRef])
 
     const toggleMenu = (openMenu?: boolean) => {
         setShowMobileMenu(openMenu === true 

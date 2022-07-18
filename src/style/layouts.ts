@@ -1,8 +1,8 @@
 import { MediaQueries, Breakpoints, Spacing } from "./types";
 
 export const breakpointMap: { [key: string]: number } = {
-  mobile: 639,
-  tablet: 1024,
+  mobile: 637,
+  tablet: 1023,
   desktop: 2560,
 };
 
@@ -40,7 +40,7 @@ const sizes = {
   }
 }
 
-export default {
+export const Layout = {
   siteWidth: 1200,
   breakpoints,
   mediaQueries,
@@ -49,3 +49,5 @@ export default {
   zIndices,
   sizes,
 };
+
+export default Layout;

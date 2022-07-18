@@ -148,7 +148,8 @@ const TitleOverlay = styled.div`
     .nft-details-box {
         > * {
             white-space: nowrap;
-            overflow: ellipses;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
     }
 `;

@@ -96,7 +96,7 @@ const TextWrapper = styled.div`
         white-space: nowrap;
         word-break: break-words;
         overflow: hidden;
-        text-overflow: ellipses;
+        text-overflow: elllipsis;
     }
 
     .collection-title-box {

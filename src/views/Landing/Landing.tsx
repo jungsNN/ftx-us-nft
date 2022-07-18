@@ -27,7 +27,7 @@ const Landing: FC = () => {
         if (store.collections.length === 0) return undefined;
            
         return store.collections.filter(c => c?.collectionDict?.name === nft.collection)[0]
-    }, [store.collections.length])
+    }, [store.collections])
 
     const getFeaturedCollections = () => {
         const featured =  store.collections.filter(c => c.collectionDict.featured === true);

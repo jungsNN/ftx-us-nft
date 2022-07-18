@@ -1,15 +1,17 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled, { useTheme } from 'styled-components';
-import { Card, Hero, Text, Wrapper } from '../../components/Foundation';
+import { Button, Card, Hero, Text, Wrapper } from '../../components/Foundation';
 import useMatchBreakpoints from '../../hooks/useMatchBreakpoints';
 import { typography } from '../../style/typography';
 import { NFTCollectionMetadata } from '../../types/collection';
-import { commafy } from '../../utils/utils';
+import { commafy, getId } from '../../utils/utils';
 
 
 const FeaturedHero = ({collection}: {collection?: NFTCollectionMetadata}) => {
     const { isMobile, isTablet } = useMatchBreakpoints();
     const theme = useTheme();
+    const navigate = useNavigate();
     const boxHeight = isMobile || isTablet ? '100%' : '500px';
     const imgSize = isMobile || isTablet ? '100%' : '450px';
     const titleSize = isMobile ? '36px' : '40px';
@@ -25,11 +27,15 @@ const FeaturedHero = ({collection}: {collection?: NFTCollectionMetadata}) => {
         )
     }
 
+    const handleOnNavigate = (id: string) => {
+        navigate(`/collections/${id}`, {replace: false})
+    }
+
     const descriptions = () => {
         const collectionDict = collection!.collectionDict;
         return (
            
-            <Wrapper gap="16px" padding="8px 16px">
+            <Wrapper gap="16px" padding="8px 16px" items="center">
                 <Wrapper gap="8px">
                     <Text
                         fontWeight="600" 
@@ -42,6 +48,11 @@ const FeaturedHero = ({collection}: {collection?: NFTCollectionMetadata}) => {
                         {collectionDict.description}
                     </Text>
                 </Wrapper>
+                <div style={{height: '100%'}}>
+                    <Button variant="outlined" onClick={() => handleOnNavigate(getId(collection, {isCollection: true}))}>
+                        View Collection
+                    </Button>
+                </div>
                 <DetailBox>
                     <DetailWrapper by="col">
                         <Wrapper items="center">

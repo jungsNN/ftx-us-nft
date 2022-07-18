@@ -1,14 +1,13 @@
 import React, { useState } from 'react';
+import { Text } from '../../../components/Foundation';
 import { GridView, NFTCard } from '../../../components';
 import PageButtons from '../../../components/PageButtons';
 import useStore from '../../../state/store';
 import { NFT } from '../../../types/nft';
 import { getId } from '../../../utils/utils';
 
-const DEFAULT_MAX_PER_GRID = 60;
-const ExploreNFTs = ({data}: {data: NFT[]}) => {
+const ExploreNFTs = ({data, maxItems}: {data: NFT[], maxItems: number}) => {
     const collections = useStore.getState().collections;
-    const [maxItems, setMaxItems] = useState(DEFAULT_MAX_PER_GRID);
     const [currentPage, setCurrentPage] = useState(1);
 
     const handleOnPage = (pg: number) => {
@@ -16,7 +15,8 @@ const ExploreNFTs = ({data}: {data: NFT[]}) => {
     }
 
     return (
-        <>
+        <div>
+            <Text style={{marginLeft: '16px'}}>{`Showing ${data.length} items`}</Text>
             <GridView>
                 {data.slice(maxItems * (currentPage - 1), maxItems * (currentPage - 1) + maxItems)
                     .map(nft => (
@@ -28,7 +28,7 @@ const ExploreNFTs = ({data}: {data: NFT[]}) => {
                     ))}
             </GridView>
             <PageButtons count={data.length} maxPerPage={maxItems} currentPage={currentPage} onChange={handleOnPage}/>
-        </>
+        </div>
     )
 }
 

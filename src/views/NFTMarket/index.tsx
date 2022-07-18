@@ -1,7 +1,7 @@
-import React, { FC, useCallback, useState } from 'react';
+import React, { FC, useCallback, useEffect, useRef, useState } from 'react';
 import styled, { useTheme } from 'styled-components';
 import { Page, Spacer, Text, Wrapper } from '../../components/Foundation';
-import Title from '../../components/Foundation/Title';
+import ScrollToTopButton, { ToTopAnchorDiv } from '../../components/ScrollToTopButton';
 import Select from '../../components/Select';
 import useMatchBreakpoints from '../../hooks/useMatchBreakpoints';
 import useStore from '../../state/store';
@@ -19,20 +19,42 @@ const NFTMarket: FC<NFTMarketProps> = (props) => {
     const theme = useTheme();
     const store = useStore();
     const { isMobile } = useMatchBreakpoints()
+    const bottomRef = useRef<HTMLDivElement>(null)
     const [maxItems, setMaxItems] = useState(DEFAULT_MAX_PER_GRID);
-
-    const handleSetMax = (newMax:  number) => {
-        setMaxItems(newMax)
-    }
+    const [visible, setVisible] = useState(false);
 
     const handleSelectMaxItems = useCallback((e: string) => {
         setMaxItems(parseInt(e))
     }, [])
 
+    const handleScrollToTop = useCallback((e: any) => {
+        if (e?.target?.value === bottomRef.current &&  visible) {
+            // console.log('clicked to top.')
+            bottomRef!.current!.scrollIntoView({ behavior: 'smooth' })
+        }
+
+    }, [visible, bottomRef])
+
+    useEffect(() => {
+        if (bottomRef.current) {
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 100) {
+                // console.log('window.scrollY > 100', window.scrollY)
+                setVisible(true)
+                } else {
+                // console.log('to top button off.')
+                setVisible(false)
+                }});
+        window.addEventListener('click', handleScrollToTop)
+        }
+    }, [bottomRef, setVisible, handleScrollToTop])
+
+   
+
     return (
         <Page className="nft-explore-page">
             <Spacer h={theme.spacing[6]}/>
-            <Wrapper by="col" align="center">
+            <Wrapper by="col" align="center" padding={isMobile ? '0 16px' : '0 32px'}>
                 <TitleWrapper>
                     <div className="collection-explore-title">
                         <Text >
@@ -45,6 +67,7 @@ const NFTMarket: FC<NFTMarketProps> = (props) => {
                         onOption={handleSelectMaxItems} 
                         currentOption={`${maxItems}`} 
                         options={['30', '50', '100']} 
+                        label="View by"
                     />
                 </FilterWrapper>
             </Wrapper>
@@ -56,15 +79,17 @@ const NFTMarket: FC<NFTMarketProps> = (props) => {
                 >
                 {isCollection 
                         ? (<ExploreCollections data={store.collections} maxItems={maxItems}/>)
-                        : (<ExploreNFTs data={store.nfts}/>)
+                        : (<ExploreNFTs data={store.nfts} maxItems={maxItems}/>)
                     }
+                    <ToTopAnchorDiv  ref={bottomRef}/>
+            {visible && <ScrollToTopButton visible={visible}/>}
             </Wrapper>
         </Page>
     )
 }
 
 const TitleWrapper = styled.div`
-    padding-left: 32px;
+    
     text-align: left;
     width: 100%;
 
@@ -77,9 +102,5 @@ const TitleWrapper = styled.div`
 `;
 
 const FilterWrapper = styled.div``;
-
-const IconWrapper = styled.div`
-
-`;
 
 export default NFTMarket;

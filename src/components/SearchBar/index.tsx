@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback,useState } from 'react';
 import styled, { useTheme } from 'styled-components';
 import { RiSearchLine as SearchIcon } from 'react-icons/ri';
 import { Card } from '../Foundation';
@@ -10,28 +10,6 @@ const SearchBar = ({
 }) => {
     const theme = useTheme()
     const [query, setQuery] = useState('')
-    const [isVisible, setIsVisible] = useState(false)
-    const wrapperRef = useRef(null)
-
-    useEffect(() => {
-        /**
-         * Alert if clicked on outside of element
-         */
-        function handleClickOutside(event: any) {
-            // @ts-ignore
-            if (wrapperRef?.current && !wrapperRef.current.contains(event.target)) {
-                setIsVisible(false)
-            }
-        }
-
-        // Bind the event listener
-        document.addEventListener("mousedown", handleClickOutside)
-        return () => {
-            // Unbind the event listener on clean up
-            document.removeEventListener("mousedown", handleClickOutside)
-        };
-    }, [wrapperRef?.current])
-
 
   const inputHandler = useCallback(
     (e: any) => {
@@ -41,13 +19,9 @@ const SearchBar = ({
     [changeHandler],
   )
 
-  const handleFocus = useCallback(() => {
-    setIsVisible(true)
-  }, [])
-    
     return (
         <Card height="45px" style={{cursor: 'pointer'}} boxShadow="none" background={theme.colors.tertiary}>
-            <SearchBarWrapper onFocus={handleFocus}>
+            <SearchBarWrapper >
                 <Input 
                     type="text"
                     value={query}

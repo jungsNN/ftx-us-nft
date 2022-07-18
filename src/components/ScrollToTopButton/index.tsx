@@ -60,7 +60,7 @@ const ButtonWrapper = styled.div<{visible?: boolean}>`
 `
 
 const StickyButton = styled.button`
-    background: #ffffff2e;;
+    background: #00799485;
     border: none;
     box-shadow: none;
     padding: 4px 16px;
@@ -68,7 +68,7 @@ const StickyButton = styled.button`
     transition: background 0.2s ease-in;
 
     &:hover {
-      background: #ffffff69;
+      background: ${props => props.theme.colors.buttonSurface};
       transition: background 0.2s ease-in;
     }
 `

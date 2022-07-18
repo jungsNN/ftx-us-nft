@@ -11,18 +11,16 @@ import { NFT } from '../../types/nft';
 import useStore from '../../state/store';
 import SearchResults from './SearchResults';
 
-type SearchResults = {
+type SearchResultType = {
     nfts: NFT[];
     collections: NFTCollectionMetadata[];
 }
 const NavHeader = ({handleMobileMenu}: {handleMobileMenu?: (open?: boolean) => void}) => {
     const store = useStore();
     const searchbarRef = useRef(null);
-    const mobileMenuRef = useRef(null);
     const { isMobile } = useMatchBreakpoints();
-    const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const [searchKey, setSearchKey] = useState('')
-    const [searchResults, setSearchResults] = useState<SearchResults>({
+    const [searchResults, setSearchResults] = useState<SearchResultType>({
         nfts: [],
         collections: []
     })
@@ -33,7 +31,7 @@ const NavHeader = ({handleMobileMenu}: {handleMobileMenu?: (open?: boolean) => v
         if (handleMobileMenu) {
             handleMobileMenu(false)
         }
-      }, [])
+      }, [handleMobileMenu])
 
     const filterData = useCallback(() => {
     if (searchKey) {
@@ -50,6 +48,7 @@ const NavHeader = ({handleMobileMenu}: {handleMobileMenu?: (open?: boolean) => v
             if (hasCollection || hasName || hasAddress) {
                         return nft
                     }
+                    return null;
         })
 
         const _collections: NFTCollectionMetadata[] = store.collections.filter(c => {
@@ -59,6 +58,7 @@ const NavHeader = ({handleMobileMenu}: {handleMobileMenu?: (open?: boolean) => v
             if (hasName || hasIssuer) {
                         return c
                     }
+                    return null;
         })
 
         setSearchResults({
@@ -92,12 +92,6 @@ const NavHeader = ({handleMobileMenu}: {handleMobileMenu?: (open?: boolean) => v
                 setShowResults(false)
                
             }
-            if (mobileMenuRef?.current && 
-                // @ts-ignore
-                (mobileMenuRef?.current.contains(event.target) )
-            ) {
-                setMobileMenuOpen(false)
-            }
         }
 
         // Bind the event listener
@@ -106,7 +100,7 @@ const NavHeader = ({handleMobileMenu}: {handleMobileMenu?: (open?: boolean) => v
             // Unbind the event listener on clean up
             document.removeEventListener("mousedown", handleClickOutside)
         };
-    }, [searchbarRef?.current])
+    }, [searchbarRef])
 
     const toggleMobileMenu = () => {
         setShowResults(false)

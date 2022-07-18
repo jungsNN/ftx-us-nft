@@ -106,6 +106,7 @@ useEffect(() => {
         })
 
     return () => {}
+     // eslint-disable-next-line react-hooks/exhaustive-deps
 }, [])
 
 useEffect(() => {
@@ -122,6 +123,7 @@ useEffect(() => {
         })
 
     return () => {}
+     // eslint-disable-next-line react-hooks/exhaustive-deps
 }, [])
 
   return (

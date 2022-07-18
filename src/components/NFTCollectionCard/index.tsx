@@ -97,6 +97,10 @@ const TextWrapper = styled.div`
         overflow: hidden;
         text-overflow: ellipses;
     }
+
+    .collection-title-box {
+        white-space: nowrap;
+    }
    
     .token-abbr {
         text-align: center;

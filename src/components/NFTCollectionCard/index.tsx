@@ -41,10 +41,8 @@ const NFTCollectionCard: React.FC<NFTCollectionCardProps> = (
                 <ImgWrapper height={`${cardWidth()}`} width={`${cardWidth()}`}>
                     <img height="100%" width="100%" src={`${collectionDict.cardImageUrl}`} alt={collectionDict.name} style={{objectFit: 'cover'}} />
                 </ImgWrapper>
-                <AvatarWrapper cardWidth={cardWidth()}>
-                    <CircleAvatar src={`${collectionDict.avatarImageUrl}`} alt={collectionDict.name + ' avatar'} size={isTablet  ? '40px' : isMobile ? '64px' : null}/>
-                </AvatarWrapper>
                 <TitleOverlay onClick={onSelect}>
+                    
                     <ContentWrapper align="start" justify="center" items="center">
                         <TextWrapper>
                             <Text 
@@ -69,6 +67,9 @@ const NFTCollectionCard: React.FC<NFTCollectionCardProps> = (
                                 </div>
                             </div>
                         </TextWrapper>
+                        <AvatarWrapper cardWidth={cardWidth()}>
+                            <CircleAvatar src={`${collectionDict.avatarImageUrl}`} alt={collectionDict.name + ' avatar'} size={isTablet  ? '40px' : isMobile ? '64px' : null}/>
+                        </AvatarWrapper>
                     </ContentWrapper>
                 </TitleOverlay>
             </Card>
@@ -82,7 +83,7 @@ const CardWrapper = styled.div`
 `;
 const ContentWrapper = styled(Wrapper)`
     grid-gap: ${props => `${props.theme.spacing[2]}px`};
-    overflow: hidden;
+    position: relative;
 `;
 
 const TextWrapper = styled.div`
@@ -142,19 +143,8 @@ const TitleOverlay = styled.div`
 
 const AvatarWrapper = styled.div<{cardWidth: string}>`
     position: absolute;
-    top: ${({cardWidth}) => `calc(${cardWidth} / 2 - 24px)`};
-    left: ${({cardWidth}) => `calc(${cardWidth} / 2 - 28px)`};
+    bottom: 90%;
     z-index: 1;
-
-    @media(min-width: 638px) {
-        top: 42%;
-        left: 40%;
-    }
-
-    @media(min-width: 1024px) {
-        top: 38%;
-        left: 40%;
-    }
 `;
 
 export default NFTCollectionCard;
